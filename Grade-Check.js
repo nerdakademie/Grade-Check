@@ -10,23 +10,26 @@
 
 function comparing() {
     var oldTableContent = localStorage.getItem("oldTable");
-    var oldTableArray = localStorage.getItem("oldTableArray");
+    var oldTableArray = JSON.parse(localStorage.getItem("oldTableArray"));
     var compareTable = document.getElementsByClassName("table");
     var compareTableContent = compareTable[0].textContent;
-    var array = [];
+    var array = [],item;
+    //console.log(oldTableArray);
     if (compareTableContent != oldTableContent) {
       var subjects;
       if(oldTableArray == null){
         oldTableArray = new Array();
       }
-      for (var i = 0, row; row = compareTable[0].rows[i]; i++) {
+      for (var i = 1, row; row = compareTable[0].rows[i]; i++) {
         if(oldTableArray.length > i ){
-          if(oldTableArray[i][1] != row.cell[5].innerHTML){
+            //console.log(oldTableArray[i][1] +" CELL: "+row.cells[4].innerText);
+            //console.log("compare " + (oldTableArray[i][1] === row.cells[4].innerText).toString());
+            if(!(oldTableArray[i][1] === row.cells[4].innerText) && row.cells[4].innerText.length > 0){
             //Grade has changed
-            array.push([row.cells[1].innerHTML, row.cells[5].innerHTML]);
+            array.push([row.cells[1].innerHTML, row.cells[4].innerHTML]);
           }
         }
-        oldTableArray[i] = [row.cells[1].innerHTML, row.cells[5].innerHTML];
+        oldTableArray[i] = [row.cells[1].innerHTML, row.cells[4].innerHTML];
       }
       for(var j = 0, len = array.length; j < len; j++){
         subjects = subjects + array[j][0];
@@ -42,7 +45,7 @@ function comparing() {
       var oldTable = document.getElementsByClassName("table");
       oldTableContent = oldTable[0].textContent;    
       localStorage.setItem("oldTable", oldTableContent);
-      localStorage.setItem("oldTableArray",oldTableArray);
+      localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     };
     location.reload();
 };
