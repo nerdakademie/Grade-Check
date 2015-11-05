@@ -43,7 +43,7 @@ function comparing() {
         alert('Es gibt eine neue Note in dem Fach ' + subjects);
       }
       var oldTable = document.getElementsByClassName("table");
-      oldTableContent = oldTable[0].textContent;    
+      oldTableContent = oldTable[0].textContent;
       localStorage.setItem("oldTable", oldTableContent);
       localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     };
@@ -51,3 +51,35 @@ function comparing() {
 };
 
 setTimeout(comparing,60000);
+
+var colorTable= {
+  '1,0' : '#33FF33',
+  '1,3' : '#33FF33',
+  '1,7' : '#CAFF70',
+  '2,0' : '#CAFF70',
+  '2,3' : '#CAFF70',
+  '2,7' : '#FFFF66',
+  '3,0' : '#FFFF66',
+  '3,3' : '#FFFF66',
+  '3,7' : '#FFCC33',
+  '4,0' : '#FFCC33',
+  '5,0' : '#FF6666'
+};
+
+function getElementByXpath(path) {
+  return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+}
+
+for(var i = 1; i <= 31; i++){
+  var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[' + i + ']/td[5]');
+  if (elem !== null){
+    if(colorTable[elem.innerText] !== undefined){
+      elem.setAttribute('bgcolor', colorTable[elem.innerText]);
+      elem.style.backgroundColor = colorTable[elem.innerText];
+    }
+  }
+}
+
+var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[31]/th[5]');
+elem.setAttribute('bgcolor', colorTable[elem.innerText.replace('.',',')]);
+elem.style.backgroundColor = colorTable[elem.innerText.replace('.',',')];
