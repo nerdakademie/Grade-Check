@@ -13,7 +13,7 @@ function comparing() {
     var oldTableArray = localStorage.getItem("oldTableArray");
     var compareTable = document.getElementsByClassName("table");
     var compareTableContent = compareTable[0].textContent;
-    var array = [],item;
+    var array = [];
     if (compareTableContent != oldTableContent) {
       var subjects;
       if(oldTableArray == null){
