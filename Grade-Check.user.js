@@ -7,30 +7,31 @@
 // @grant       none
 // ==/UserScript==
 
+function reloadPage(){
+    location.reload();
+}
 
 function comparing() {
     var oldTableContent = localStorage.getItem("oldTable");
     var oldTableArray = JSON.parse(localStorage.getItem("oldTableArray"));
     var compareTable = document.getElementsByClassName("table");
     var compareTableContent = compareTable[0].textContent;
-    var array = [],item;
-    //console.log(oldTableArray);
+    
     if (compareTableContent != oldTableContent) {
-      var subjects;
+      var subjects = "",array = new Array();
       if(oldTableArray == null){
         oldTableArray = new Array();
       }
       for (var i = 1, row; row = compareTable[0].rows[i]; i++) {
         if(oldTableArray.length > i ){
-            //console.log(oldTableArray[i][1] +" CELL: "+row.cells[4].innerText);
-            //console.log("compare " + (oldTableArray[i][1] === row.cells[4].innerText).toString());
-            if(!(oldTableArray[i][1] === row.cells[4].innerText) && row.cells[4].innerText.length > 0){
+            if(!(oldTableArray[i][1] === row.cells[4].textContent.trim()) && row.cells[4].textContent.trim().length > 0){
             //Grade has changed
-            array.push([row.cells[1].innerHTML, row.cells[4].innerHTML]);
+            array.push([row.cells[1].textContent.trim() , row.cells[4].textContent.trim()]);
           }
         }
-        oldTableArray[i] = [row.cells[1].innerHTML, row.cells[4].innerHTML];
+        oldTableArray[i] = [row.cells[1].textContent.trim() , row.cells[4].textContent.trim()];
       }
+      console.log(array);
       for(var j = 0, len = array.length; j < len; j++){
         subjects = subjects + array[j][0];
         if(j != len -1){
@@ -47,10 +48,11 @@ function comparing() {
       localStorage.setItem("oldTable", oldTableContent);
       localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     };
-    location.reload();
+    setTimeout(reloadPage,60000);
 };
 
-setTimeout(comparing,60000);
+
+comparing();
 
 var colorTable= {
   '1,0' : '#33FF33',
