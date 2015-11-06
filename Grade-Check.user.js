@@ -31,7 +31,6 @@ function comparing() {
         }
         oldTableArray[i] = [row.cells[1].textContent.trim() , row.cells[4].textContent.trim()];
       }
-      console.log(array);
       for(var j = 0, len = array.length; j < len; j++){
         subjects = subjects + array[j][0];
         if(j != len -1){
