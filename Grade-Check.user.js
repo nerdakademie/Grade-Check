@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.2
+// @version     0.2.1
 // @grant       none
 // ==/UserScript==
 
@@ -54,8 +54,6 @@ function comparing() {
           oldTableArray[i] = [row.cells[1].textContent.trim() , row.cells[4].textContent.trim()];
         }
       }
-
-
       for(var j = 0, len = array.length; j < len; j++){
         subjects = subjects + array[j][0];
         if(j != len -1){
@@ -72,7 +70,6 @@ function comparing() {
       localStorage.setItem("oldTable", oldTableContent);
       localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     }
-    console.log(sumOfGrades(oldTableArray));
     compareTable[0].rows[compareTable[0].rows.length-1].cells[4].textContent = sumOfGrades(oldTableArray);
     setTimeout(reloadPage,60000);
 };
