@@ -39,7 +39,7 @@ function comparing() {
       }
       if(array.length > 1){
         alert('Es gibt neue Noten in den Fächern: ' +subjects);
-      }else if (array.length = 1 && subjects != null){
+      }else if (array.length = 1){
         alert('Es gibt eine neue Note in dem Fach ' + subjects);
       }
       var oldTable = document.getElementsByClassName("table");
