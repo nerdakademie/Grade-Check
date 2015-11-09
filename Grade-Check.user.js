@@ -26,7 +26,7 @@ function sumOfGrades(arr){
       }
     }
     if(average !=0 && counter !=0){
-      return average/counter;
+      return (Math.round(average/counter*1000)/1000);
     }  
   }
   return "";
