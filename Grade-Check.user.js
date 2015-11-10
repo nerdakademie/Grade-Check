@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.2.2
+// @version     0.2.3
 // @grant       none
 // ==/UserScript==
 
@@ -15,18 +15,20 @@ function isNumeric(num){
     return !isNaN(num);
 }
 
-function sumOfGrades(arr){
+function average(arr){
   if(arr.length > 1){
-    var average=0,counter=0;
+    var gradesum=0,counter=0,credsum=0;
     for(var k=1; k<arr.length; k++){
       var grade = arr[k][1];
+      var credpoint = arr[k][2];
       if(isNumeric(grade.replace(',','.')) && parseFloat(grade.replace(',','.')) > 0 && grade.indexOf("Versuch") == -1){
-        average = average + parseFloat(grade.replace(',','.'));
+        gradesum = gradesum + (parseFloat(grade.replace(',','.')) * parseFloat(credpoint));
+        credsum = credsum + parseFloat(credpoint);
         counter++;
       }
     }
-    if(average !=0 && counter !=0){
-      return (Math.round(average/counter*1000)/1000);
+    if(gradesum !=0 && counter !=0){
+      return (Math.round(gradesum/credsum*1000)/1000);
     }  
   }
   return "";
@@ -48,10 +50,10 @@ function comparing() {
           if(oldTableArray.length > i ){
               if(!(oldTableArray[i][1] === row.cells[4].textContent.trim()) && row.cells[4].textContent.trim().length > 0){
               //Grade has changed
-              array.push([row.cells[1].textContent.trim() , row.cells[4].textContent.trim()]);
+              array.push([row.cells[1].textContent.trim() , row.cells[4].textContent.trim() , row.cells[5].textContent.trim()]);
             }
           }
-          oldTableArray[i] = [row.cells[1].textContent.trim() , row.cells[4].textContent.trim()];
+          oldTableArray[i] = [row.cells[1].textContent.trim() , row.cells[4].textContent.trim() , row.cells[5].textContent.trim()];
         }
       }
       for(var j = 0, len = array.length; j < len; j++){
@@ -70,7 +72,7 @@ function comparing() {
       localStorage.setItem("oldTable", oldTableContent);
       localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     }
-    compareTable[0].rows[compareTable[0].rows.length-1].cells[4].textContent = sumOfGrades(oldTableArray);
+    compareTable[0].rows[compareTable[0].rows.length-1].cells[4].textContent = average(oldTableArray);
     setTimeout(reloadPage,60000);
 };
 
