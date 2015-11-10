@@ -18,7 +18,7 @@ function isNumeric(num){
 function average(arr){
   if(arr.length > 1){
     var gradesum=0,counter=0,credsum=0;
-    for(var k=1; k<arr.length; k++){
+    for(var k=1; k<arr.length-1; k++){
       var grade = arr[k][1];
       var credpoint = arr[k][2];
       if(isNumeric(grade.replace(',','.')) && parseFloat(grade.replace(',','.')) > 0 && grade.indexOf("Versuch") == -1){
