@@ -19,7 +19,7 @@ function isNumeric(num){
 
 function average(arr){
   if(arr.length > 1){
-    var gradesum=0,counter=0,credsum=0;
+    var gradesum=0,credsum=0;
 	//minus 1 for the calculated serverside sum
     for(var k=1; k<arr.length-1; k++){
       var grade = arr[k][1];
@@ -27,10 +27,9 @@ function average(arr){
       if(isNumeric(grade.replace(',','.')) && parseFloat(grade.replace(',','.')) > 0 && grade.indexOf("Versuch") == -1){
         gradesum = gradesum + (parseFloat(grade.replace(',','.')) * parseFloat(credpoint));
         credsum = credsum + parseFloat(credpoint);
-        counter++;
       }
     }
-    if(gradesum !=0 && counter !=0){
+    if(gradesum !=0 && credsum !=0){
       return (Math.round(gradesum/credsum*1000)/1000);
     }  
   }
