@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.4.2
+// @version     0.4.3
 // @grant       none
 // @downloadURL https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.user.js
 // @updateURL   https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.meta.js
@@ -103,7 +103,6 @@ for(var i = 1; i <= 31; i++){
   var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[' + i + ']/td[5]');
   if (elem !== null){
     if(colorTable[elem.innerText.trim().substring(0,3)] !== undefined){
-      console.log("Changed style of: " + elem.innerText.trim().substring(0,3));
       elem.setAttribute('bgcolor', colorTable[elem.innerText.trim().substring(0,3)]);
       elem.style.backgroundColor = colorTable[elem.innerText.trim().substring(0,3)];
     }
