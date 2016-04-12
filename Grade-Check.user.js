@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.4.5
+// @version     0.4.6
 // @grant       none
 // @downloadURL https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.user.js
 // @updateURL   https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.meta.js
@@ -78,37 +78,28 @@ function comparing() {
     setTimeout(reloadPage,60000);
 }
 
-
 comparing();
 
-var colorTable= {
-  '1,0' : '#33FF33',
-  '1,3' : '#33FF33',
-  '1,7' : '#CAFF70',
-  '2,0' : '#CAFF70',
-  '2,3' : '#CAFF70',
-  '2,7' : '#FFFF66',
-  '3,0' : '#FFFF66',
-  '3,3' : '#FFFF66',
-  '3,7' : '#FFCC33',
-  '4,0' : '#FFCC33',
-  '5,0' : '#FF6666'
-};
 
-function getClosestValue(aNum){
+function getGradeColor(aNum) {
     var gradeNum = parseFloat(aNum.replace(',','.'));
-    var diff = 100,
-    closestkey= '';
-    Object.keys(colorTable).forEach(function(key, index) {
-        var keyNum = parseFloat(key.replace(',','.'));
-        if(Math.abs(keyNum - gradeNum) < diff){
-            closestkey = key;
-            diff = Math.abs(keyNum - gradeNum);
-        }
+    var neg = (gradeNum >= 3);
+    gradeNum = Math.abs(gradeNum-3);
+    gradeNum = gradeNum / 2;
+    console.log(gradeNum.toString());
+    gradeNum = gradeNum * 255;
+    console.log(gradeNum.toString());
+    var gradeInt = Math.round(gradeNum);
 
-    }, colorTable);
-    return colorTable[closestkey];
-}
+    if(neg){
+
+      var green = (255-gradeInt).toString(16);
+      return '#FF'+green+'00'
+    }else {
+      var red = (255-gradeInt).toString(16);
+      return '#'+red+'FF00'
+    }
+};
 
 function getElementByXpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
@@ -117,14 +108,14 @@ function getElementByXpath(path) {
 for(var i = 1; i <= 31; i++){
   var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[' + i + ']/td[5]');
   if (elem !== null){
-    if(colorTable[elem.innerText.trim().substring(0,3)] !== undefined){
-      elem.setAttribute('bgcolor', getClosestValue(elem.innerText.trim().substring(0,3)));
-      elem.style.backgroundColor = getClosestValue(elem.innerText.trim().substring(0,3));
+    if(elem.innerText.trim().substring(0,3) !== ""){
+      elem.setAttribute('bgcolor', getGradeColor(elem.innerText.trim().substring(0,3)));
+      elem.style.backgroundColor = getGradeColor(elem.innerText.trim().substring(0,3));
     }
   }
 }
 
 //Average coloration
 var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[31]/th[5]');
-elem.setAttribute('bgcolor', getClosestValue(elem.innerText.replace('.',',')));
-elem.style.backgroundColor = getClosestValue(elem.innerText.replace('.',','));
+elem.setAttribute('bgcolor', getGradeColor(elem.innerText.replace('.',',')));
+elem.style.backgroundColor = getGradeColor(elem.innerText.replace('.',','));
