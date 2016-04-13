@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.4.9
+// @version     0.4.10
 // @grant       none
 // @downloadURL https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.user.js
 // @updateURL   https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.meta.js
@@ -24,6 +24,9 @@ function average(arr){
     for(var k=1; k<arr.length; k++){
       var grade = arr[k][1];
       var credpoint = arr[k][2];
+      if(k == 30){
+        credpoint *= 3;
+       }
       if(isNumeric(grade.replace(',','.')) && parseFloat(grade.replace(',','.')) > 0 && grade.indexOf("Versuch") == -1){
         gradesum = gradesum + (parseFloat(grade.replace(',','.')) * parseFloat(credpoint));
         credsum = credsum + parseFloat(credpoint);
