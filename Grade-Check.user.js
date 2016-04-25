@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.4.11
+// @version     0.4.12
 // @grant       none
 // @downloadURL https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.user.js
 // @updateURL   https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.meta.js
@@ -95,19 +95,19 @@ function getGradeColor(aNum) {
     if(neg){
       var green = (255-gradeInt).toString(16);
       if((255-gradeInt)<16){
-        return '#FF0'+green+'60'
+        return '#FF0'+green+'60';
       }else{
-        return '#FF'+green+'60'
+        return '#FF'+green+'60';
       }
     }else {
       var red = (255-gradeInt).toString(16);
       if((255-gradeInt)<16){
-        return '#0'+red+'FF60'
+        return '#0'+red+'FF60';
       }else{
-        return '#'+red+'FF60'
+        return '#'+red+'FF60';
       }
     }
-};
+}
 
 function getElementByXpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
