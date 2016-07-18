@@ -3,7 +3,7 @@
 // @namespace   nak
 // @description checks for new grades
 // @include     https://cis.nordakademie.de/pruefungsamt/pruefungsergebnisse/?no_cache=1
-// @version     0.4.12
+// @version     0.4.13
 // @grant       none
 // @downloadURL https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.user.js
 // @updateURL   https://github.com/nerdakademie/Grade-Check/raw/master/Grade-Check.meta.js
@@ -39,12 +39,15 @@ function average(arr){
   return "";
 }
 
-function comparing() {
-    var oldTableContent = localStorage.getItem("oldTable");
-    var oldTableArray = JSON.parse(localStorage.getItem("oldTableArray"));
-    var compareTable = document.getElementsByClassName("table");
-    var compareTableContent = compareTable[0].textContent;
 
+var oldTableContent = localStorage.getItem("oldTable");
+var oldTableArray = JSON.parse(localStorage.getItem("oldTableArray"));
+var compareTable = document.getElementsByClassName("table");
+var compareTableContent = compareTable[0].textContent;
+var rowCount = compareTable[0].rows.length;
+
+
+function comparing() {
     if (compareTableContent != oldTableContent) {
       var subjects = "",array = new Array();
       if(oldTableArray === null){
@@ -77,7 +80,7 @@ function comparing() {
       localStorage.setItem("oldTable", oldTableContent);
       localStorage.setItem("oldTableArray", JSON.stringify(oldTableArray));
     }
-    compareTable[0].rows[compareTable[0].rows.length-1].cells[4].textContent = average(oldTableArray);
+    compareTable[0].rows[rowCount-1].cells[4].textContent = average(oldTableArray);
     setTimeout(reloadPage,60000);
 }
 
@@ -113,7 +116,7 @@ function getElementByXpath(path) {
   return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
 }
 
-for(var i = 1; i <= 31; i++){
+for(var i = 1; i <= rowCount-1; i++){
   var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[' + i + ']/td[5]');
   if (elem !== null){
     if(elem.innerText.trim().substring(0,3) !== ""){
@@ -124,6 +127,6 @@ for(var i = 1; i <= 31; i++){
 }
 
 //Average coloration
-var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr[31]/th[5]');
+var elem = getElementByXpath('//*[@id="curricular"]/table/tbody/tr['+ (rowCount-1) +']/th[5]');
 elem.setAttribute('bgcolor', getGradeColor(elem.innerText.replace('.',',')));
 elem.style.backgroundColor = getGradeColor(elem.innerText.replace('.',','));
